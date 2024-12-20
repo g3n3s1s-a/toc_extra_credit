@@ -9,7 +9,7 @@ This project focuses on solving the SAT to 3-SAT reduction problem by implementi
 - Testing the correctness of the reduction with multiple test cases.
 
 ## Why Did You Choose This Work?
-I chose to implement this project because I wanted to improve my understanding of problem reductions, which are crucial in computational complexity. I do not remember the question exactly, but I believe the last test in the final was reductions,mapping, and time complexity. I also do not understand NP-completeness. I felt this would help me with problems related to NP-completeness and algorithm design. Additionally, the SAT and 3-SAT problems have been difficult for me to grasp, so this project helped solidify my understanding of them.
+I chose to implement this project because I wanted to improve my understanding of problem reductions, which are crucial in computational complexity. I do not remember the question exactly, but I believe the last question in the final was reductions, mapping, and time complexity. I also do not understand NP-completeness. I felt this would help me with problems related to NP-completeness and algorithm design. Additionally, the SAT and 3-SAT problems have been difficult for me to grasp, so this project helped solidify my understanding of them.
 
 ## Files in the Repository
 - `sat_to_3sat.py`: Python script containing the implementation of the SAT to 3-SAT reduction.
@@ -17,77 +17,41 @@ I chose to implement this project because I wanted to improve my understanding o
 - `test/example_inputs/`: Example SAT formulas for testing.
 - `README.md`: This file, which explains the project.
 
+## Why is SAT to 3-SAT Reduction Important?
+SAT (Boolean Satisfiability Problem) was the first problem proven to be **NP-complete**, as demonstrated by Stephen Cook in 1971 (Cook’s Theorem). The reduction from SAT to 3-SAT shows that even a constrained version of SAT—where every clause has exactly three literals—remains NP-complete. This has significant implications in theoretical computer science:
 
-## What I learned 
-First, we can check the time needed to complete the following algorithm class:
-1. O(N) -> say it requires 1 second to process N=100
-2. O(N^3) -> 3 nested loops -> now requires N^3=1000000/100 * 1_second = 10000 seconds = ~ 3 hours
-3. O(2^N) -> N levels (binary tree) of computations -> 2^N = 1.26e+30 seconds
-4. O(n!) -> N levels (of increasing branches, 1x2x3x...xN) of computations -> 9.332622e+157 seconds
+### 1. **Equivalence Between Problems in NP**
+SAT to 3-SAT reduction demonstrates that SAT and 3-SAT are computationally equivalent. Any solution to 3-SAT can be transformed to solve SAT, and vice versa, in polynomial time. This equivalence is essential for understanding the nature of NP problems: simplifying constraints does not necessarily make a problem easier to solve.
 
+### 2. **Framework for Reductions**
+The reduction provides a template for proving other problems are NP-complete. Many NP-complete problems are shown to be so by reducing 3-SAT to them in polynomial time. This establishes a chain of equivalences and supports the broader study of computational complexity.
 
-### All about P
+### 3. **Implications for NP-Completeness**
+Understanding SAT and its reductions helps us grapple with the P vs. NP question—a central open problem in computer science. If SAT can be solved in polynomial time, then all problems in NP can also be solved efficiently. However, no such solution is known, making SAT and its variants a cornerstone of complexity theory.
 
-#### What is polynomial?
-> **Math definition**:
-> an expression of more than two algebraic terms, especially the sum of several terms that contain different powers of the same variable(s).`
-> Example: 6x4+3x3+3x2+2x+1 (Quartic Polynomial)
+## What Does NP Mean?
+- **NP (Nondeterministic Polynomial Time)** is the class of problems for which a given solution can be verified in polynomial time.
+- A problem is in NP if we can guess a solution (possibly non-deterministically) and verify its correctness in polynomial time.
 
-- N, N^k, etc are polynomial functions
-- 2^N, N!, N^N, are **non**-polynomial functions
+### Examples:
+- **Traveling Salesman Problem (TSP)**: Verifying that a given route is shorter than a certain distance can be done in polynomial time.
+- **Boolean Satisfiability**: Verifying that a given assignment of variables satisfies the formula is efficient.
 
-So in general, polynomial time refers to:
-> O(n^k) where _n_ is the problem size, and _k_ is a constant
+## What Does NP-Completeness Mean?
+- A problem is **NP-complete** if:
+  1. It is in NP.
+  2. Every other problem in NP can be reduced to it in polynomial time.
+- NP-complete problems are the hardest problems in NP. If we solve one NP-complete problem efficiently, we can solve all NP problems efficiently.
 
-#### Sample problems
-- Adding n numbers: O(n)
-- Sorting n items: O(n log n)
-- Multiple 2 n by n matrices: O(n^2.37) --> ***PROVE IT***
-- Finding the shortest route between 2 points in a network with n roads (Dijkstra): O(n log n) --> [more](https://stackoverflow.com/questions/26547816/understanding-time-complexity-calculation-for-dijkstra-algorithm)
-- Solving a system of n linear equations: O(n^3)
+### Why Is This Important?
+The concept of NP-completeness underlines the quest to determine whether **P = NP**: Can every problem whose solution can be verified quickly also be solved quickly? If SAT (or 3-SAT) is solvable in polynomial time, this would imply P = NP, revolutionizing computer science.
 
-#### What is P?
-- Problems that can be solved in polynomial time
-- Can be solved efficiently (does not hang the computer)
-- Independent of
-	- hardware (non-quantum)
-	- operating system
-	- programming language
+## What I Learned
+Through this project, I gained a better understanding of:
+- Polynomial and non-polynomial time complexities.
+- The importance of problem reductions in theoretical computer science.
+- The distinction between P, NP, and NP-completeness.
 
-#### What is not P?
-- Travelling Salesman Problem
-- Formula satisfiability
-
-#### Now, what is NP (non-deterministic polynomial)?
-
-#### Definition of NP
-- The set of problems whose solution can be **verified** in polynomial time.
-- A problem is called NP (nondeterministic polynomial) if its solution can be guessed and verified in polynomial time; nondeterministic means that no particular rule is followed to make the guess.
-
-a) Verification of TSP (distance travelled)
-Given permutation, is its length less than some value `B`
-
-b) Verification of satisfiability
-Given a settings of the boolean variables, is the formula(statement) true?
-
-c) Verification of sorting
-Given a list of numbers, is it already in sorted order? 4,5,1,3
-
-#### So what is non-determinism here saying?
-
-The non-determinism here comes from the fact that you can verify some solution that appear out of nowhere (maybe luck, maybe guess), but you cannot always replicate finding the solution quickly.
-
-Also, the algorithm used can be different.
-We have 2 programs. 1 for verification, 1 for solution.However it is still 1 problem, an NP problem.
-
-
-#### Moving on, NP-Completeness
-
-This is a quest to seek the holy grail of P=NP, ie. can we solve NP quickly?
-
-However, there are many different NP problems. Can we designate a "master problem", `M` of all NP problems so that if the master problem is solved, all NP problems are solved? This master problem is in the set of `NP Complete`. To be in `NP Complete`, `M` is already in NP, and every other problems in NP is quickly(in polynomial time) reducible/transformable to `M`. So if `M` is solved quickly, everything in NP will be solved quickly.
-
-#### P != NP ?
-Unsolved problem in computer science: If the solution to a problem is easy to check for correctness, must the problem be easy to solve? The P versus NP problem is a major unsolved problem in theoretical computer science.
+By working through examples and coding the reduction, I improved my grasp of how NP-complete problems relate to one another and why solving them efficiently remains one of the greatest challenges in computing.
 
 
